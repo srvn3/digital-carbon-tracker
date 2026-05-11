@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # AI Digital Carbon Tracker
 
 A full-stack digital carbon footprint tracker built with Python Flask, MySQL, Chart.js, and modern glassmorphism UI.
@@ -47,3 +48,7 @@ A full-stack digital carbon footprint tracker built with Python Flask, MySQL, Ch
 
 - Replace `app.secret_key` with a secure random value for production.
 - Set `debug=False` when deploying.
+=======
+# digital-carbon-tracker
+AI-powered Digital Carbon Tracker web application built using Flask, MySQL, HTML, CSS, and JavaScript. The project tracks app usage, calculates carbon footprint, generates eco alerts, dynamic green scores, leaderboards, and promotes sustainable digital habits through an interactive dashboard.
+>>>>>>> 8077462c21f521788afad043c0c47001f96c545c
