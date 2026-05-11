@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Report - AI Digital Carbon Tracker</title>
+    <link rel="stylesheet" href="/static/css/main.css" />
+    <script src="https://kit.fontawesome.com/a81368914c.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="page-shell report-shell">
+        <div class="background-glow"></div>
+        <div class="report-card glass-card animate-fade">
+            <div class="report-header">
+                <h1>Carbon Report</h1>
+                <p>Review the latest estimate from your app usage and download a PDF summary.</p>
+            </div>
+            {% if latest_report %}
+            <div class="report-summary">
+                <div class="report-item">
+                    <span>Total Carbon</span>
+                    <strong>{{ latest_report.total_co2 }} g CO2</strong>
+                </div>
+                <div class="report-item">
+                    <span>Today</span>
+                    <strong>{{ latest_report.daily_co2 }} g CO2</strong>
+                </div>
+                <div class="report-item">
+                    <span>Weekly</span>
+                    <strong>{{ latest_report.weekly_co2 }} g CO2</strong>
+                </div>
+                <div class="report-item">
+                    <span>Monthly</span>
+                    <strong>{{ latest_report.monthly_co2 }} g CO2</strong>
+                </div>
+            </div>
+            <div class="report-actions">
+                <a href="/download-report" class="btn btn-primary">Download PDF Report</a>
+                <a href="/dashboard" class="btn btn-secondary">Back to Dashboard</a>
+            </div>
+            {% else %}
+            <p class="empty-note">No report data available yet. Submit your first usage inputs to generate a carbon report.</p>
+            <div class="report-actions">
+                <a href="/dashboard" class="btn btn-secondary">Go to Dashboard</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

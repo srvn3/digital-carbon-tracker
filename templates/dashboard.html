@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - AI Digital Carbon Tracker</title>
+    <link rel="stylesheet" href="/static/css/main.css" />
+    <script src="https://kit.fontawesome.com/a81368914c.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="dashboard-shell">
+        <aside class="sidebar glass-card">
+            <div class="sidebar-brand">
+                <h2>CarbonTracker</h2>
+            </div>
+            <nav>
+                <a class="active" href="/dashboard"><i class="fas fa-home"></i> Dashboard</a>
+                <a href="/report"><i class="fas fa-file-alt"></i> Report</a>
+                <a href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </nav>
+            <div class="theme-toggle-card">
+                <span>Dark Mode</span>
+                <label class="switch">
+                    <input type="checkbox" id="theme-toggle" checked />
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </aside>
+        <main class="dashboard-content">
+            <header class="dashboard-header glass-card animate-fade">
+                <div class="dashboard-user">
+                    <div>
+                        <h1>Welcome back, {{ username }}</h1>
+                        <p>Logged in as <strong>{{ logged_in_email }}</strong></p>
+                    </div>
+                    <div class="user-chip">
+                        {% if profile_picture %}
+                        <img src="{{ profile_picture }}" alt="Profile avatar" />
+                        {% else %}
+                        <div class="avatar-circle">{{ avatar_initials }}</div>
+                        {% endif %}
+                        <div>
+                            <span>Current account</span>
+                            <strong>{{ logged_in_email }}</strong>
+                        </div>
+                    </div>
+                </div>
+                <div class="stats-pill">
+                    <span>Green Score</span>
+                    <strong>{{ green_score }}</strong>
+                </div>
+            </header>
+            <section class="top-cards">
+                <article class="stat-card glass-card animate-fade delay-1">
+                    <span>Emission Today</span>
+                    <h2 id="today-total">{{ daily_total }} g</h2>
+                    <p>Latest carbon footprint inputs.</p>
+                </article>
+                <article class="stat-card glass-card animate-fade delay-2">
+                    <span>Weekly Emission</span>
+                    <h2 id="weekly-total">{{ weekly_total }} g</h2>
+                    <p>Current 7-day usage trend.</p>
+                </article>
+                <article class="stat-card glass-card animate-fade delay-3">
+                    <span>Monthly Emission</span>
+                    <h2 id="monthly-total">{{ monthly_total }} g</h2>
+                    <p>30-day footprint summary.</p>
+                </article>
+            </section>
+            <section class="dashboard-grid">
+                <div class="panel glass-card animate-fade delay-4">
+                    <div class="panel-header">
+                        <h2>Usage Input</h2>
+                        <p>Submit today’s app consumption and see instant results.</p>
+                    </div>
+                    <form id="usage-form" class="usage-form" action="/submit-usage" method="post">
+                        <div class="grid-2">
+                            <label>
+                                <span>Instagram Hours</span>
+                                <input type="number" name="instagram" min="0" step="0.1" value="0" />
+                            </label>
+                            <label>
+                                <span>WhatsApp Hours</span>
+                                <input type="number" name="whatsapp" min="0" step="0.1" value="0" />
+                            </label>
+                        </div>
+                        <div class="grid-2">
+                            <label>
+                                <span>YouTube Hours</span>
+                                <input type="number" name="youtube" min="0" step="0.1" value="0" />
+                            </label>
+                            <label>
+                                <span>Netflix Hours</span>
+                                <input type="number" name="netflix" min="0" step="0.1" value="0" />
+                            </label>
+                        </div>
+                        <div class="grid-2">
+                            <label>
+                                <span>Gmail Emails Sent</span>
+                                <input type="number" name="gmail" min="0" step="1" value="0" />
+                            </label>
+                            <label>
+                                <span>Google Drive GB</span>
+                                <input type="number" name="drive" min="0" step="0.1" value="0" />
+                            </label>
+                        </div>
+                        <div class="grid-2">
+                            <label>
+                                <span>Spotify Hours</span>
+                                <input type="number" name="spotify" min="0" step="0.1" value="0" />
+                            </label>
+                            <label>
+                                <span>Zoom Hours</span>
+                                <input type="number" name="zoom" min="0" step="0.1" value="0" />
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-secondary">Submit Usage</button>
+                        <div id="status-box" class="status-message"></div>
+                    </form>
+                </div>
+                <div class="panel glass-card animate-fade delay-5 analytics-panel">
+                    <div class="panel-header">
+                        <h2>Carbon Analytics</h2>
+                        <p>Interactive charts update as you submit new inputs.</p>
+                    </div>
+                    <div class="analytics-meta">
+                        <span class="analytics-pill">Top contributor: {{ top_contributor or 'Awaiting usage' }}</span>
+                        <span class="analytics-pill">Latest total: {{ latest_report.total_co2 if latest_report else 0 }} g</span>
+                    </div>
+                    <div class="chart-grid">
+                        <div class="chart-card">
+                            <canvas id="carbon-pie"></canvas>
+                        </div>
+                        <div class="chart-card">
+                            <canvas id="weekly-bar"></canvas>
+                        </div>
+                        <div class="chart-card full-width">
+                            <canvas id="monthly-line"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="dashboard-grid lower-grid">
+                <div class="panel glass-card animate-fade delay-6">
+                    <div class="panel-header">
+                        <h2>Eco Tips</h2>
+                    </div>
+                    <p id="eco-tip">{{ eco_tip }}</p>
+                </div>
+                <div class="panel glass-card animate-fade delay-7">
+                    <div class="panel-header">
+                        <h2>Leaderboard</h2>
+                    </div>
+                    <div class="leaderboard-table-wrapper">
+                        <table class="leaderboard-table">
+                            <thead>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>Username</th>
+                                    <th>Usage Hours</th>
+                                    <th>Eco Score</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in leaderboard %}
+                                <tr>
+                                    <td>{{ loop.index }}</td>
+                                    <td>{{ item.username }}</td>
+                                    <td>{{ item.usage_hours }}</td>
+                                    <td>{{ item.eco_score }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+            <section class="notifications-panel glass-card animate-fade delay-8">
+                <div class="panel-header">
+                    <h2>Alerts</h2>
+                </div>
+                <div class="notification-list">
+                    {% if notifications %}
+                        {% for alert in notifications %}
+                            <div class="notification-item {{ alert.level }}">
+                                <p>{{ alert.message }}</p>
+                                <span>{{ alert.created_at.strftime('%b %d, %H:%M') }}</span>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="empty-note">No alerts yet — keep your usage green.</p>
+                    {% endif %}
+                </div>
+            </section>
+        </main>
+    </div>
+    <script id="pie-labels" type="application/json">{{ pie_labels | tojson }}</script>
+    <script id="pie-values" type="application/json">{{ pie_values | tojson }}</script>
+    <script id="weekly-labels" type="application/json">{{ weekly_labels | tojson }}</script>
+    <script id="weekly-values" type="application/json">{{ weekly_values | tojson }}</script>
+    <script id="notifications-data" type="application/json">{{ notifications | tojson }}</script>
+    <script id="monthly-labels" type="application/json">{{ monthly_labels | tojson }}</script>
+    <script id="monthly-values" type="application/json">{{ monthly_values | tojson }}</script>
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
