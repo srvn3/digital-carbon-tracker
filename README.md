@@ -1,54 +1,80 @@
-<<<<<<< HEAD
 # AI Digital Carbon Tracker
 
-A full-stack digital carbon footprint tracker built with Python Flask, MySQL, Chart.js, and modern glassmorphism UI.
+A full-stack web application that helps users understand the environmental impact of their digital habits. The system tracks usage across commonly used applications, estimates the associated digital carbon footprint, and presents the results through an interactive dashboard.
 
 ## Features
 
-- Login / Register authentication with Flask and MySQL
-- Animated modern UI with dark/light theme toggle
-- Dashboard with daily, weekly, and monthly carbon totals
-- App usage input for Instagram, WhatsApp, YouTube, Netflix, Gmail, Google Drive, Spotify, and Zoom
-- Dynamic Chart.js charts and eco tips
-- Browser notifications for high usage thresholds
-- PDF download report generation
-- Leaderboard for eco leaders
-- Responsive mobile-friendly layout
+* User registration and login
+* Digital usage tracking for applications such as YouTube, Instagram, WhatsApp, Netflix, Spotify, Gmail, Google Drive and Zoom
+* Daily, weekly and monthly carbon footprint summaries
+* Interactive charts using Chart.js
+* Green score and eco-friendly suggestions
+* Usage-based eco alerts and browser notifications
+* Eco leaderboard
+* PDF report generation
+* Responsive dashboard with dark/light theme
 
-## Setup Instructions
+## Tech Stack
 
-1. Install Python 3.11+ and XAMPP with MySQL.
-2. Start Apache and MySQL from XAMPP.
-3. Create the database using the SQL schema:
-   - Open `phpMyAdmin` or MySQL CLI
-   - Run the statements in `schema.sql`
-4. Install Python dependencies:
-   ```powershell
-   python -m pip install -r requirements.txt
-   ```
-5. Update database credentials in `app.py` if needed:
-   ```python
-   app.config['MYSQL_USER'] = 'root'
-   app.config['MYSQL_PASSWORD'] = ''
-   app.config['MYSQL_DB'] = 'digital_carbon_tracker'
-   ```
-6. Run the Flask app:
-   ```powershell
-   python app.py
-   ```
-7. Open a browser and visit `http://127.0.0.1:5000`
+* **Frontend:** HTML, CSS, JavaScript, Chart.js
+* **Backend:** Python, Flask
+* **Database:** MySQL
+* **Authentication:** Flask-based authentication
+* **Reports:** PDF generation
 
-## Notes
+## How It Works
 
-- Use the login/register pages to create a new user.
-- Dashboard offers a full usage input experience with charts, suggestions, and notifications.
-- The `download-report` endpoint generates a PDF summary of your latest report.
+Users enter their digital application usage, after which the system calculates an estimated carbon footprint based on the recorded usage. The dashboard presents the results through charts, scores and recommendations to help users become more aware of their digital habits.
 
-## Recommended Improvements
+## Running Locally
 
-- Replace `app.secret_key` with a secure random value for production.
-- Set `debug=False` when deploying.
-=======
-# digital-carbon-tracker
-AI-powered Digital Carbon Tracker web application built using Flask, MySQL, HTML, CSS, and JavaScript. The project tracks app usage, calculates carbon footprint, generates eco alerts, dynamic green scores, leaderboards, and promotes sustainable digital habits through an interactive dashboard.
->>>>>>> 8077462c21f521788afad043c0c47001f96c545c
+### Requirements
+
+* Python 3.11+
+* XAMPP with MySQL
+* A web browser
+
+### Setup
+
+1. Clone the repository.
+
+2. Create the MySQL database using `schema.sql`.
+
+3. Install the required Python packages:
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+4. Configure the database credentials in `app.py` or through environment variables.
+
+5. Start MySQL using XAMPP.
+
+6. Run the Flask application:
+
+```bash
+python app.py
+```
+
+7. Open:
+
+```text
+http://127.0.0.1:5000
+```
+
+## Project Structure
+
+```text
+digital-carbon-tracker/
+├── static/
+├── templates/
+├── app.py
+├── schema.sql
+├── requirements.txt
+├── setup_oauth.py
+└── README.md
+```
+
+## Project Purpose
+
+The project explores how everyday digital activity can be made more visible from an environmental perspective, while encouraging users to adopt more sustainable digital habits.
